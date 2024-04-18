@@ -5,6 +5,8 @@ import Register from '../screens/auth/Register';
 import {NavigationContainer} from '@react-navigation/native';
 import DemoMap from '../screens/maps/DemoMap';
 import FlashMessage from 'react-native-flash-message';
+import Home from '../screens/home';
+import Event from '../screens/event';
 const Stack = createStackNavigator();
 
 const MainRoute = () => {
@@ -14,9 +16,10 @@ const MainRoute = () => {
         screenOptions={{
           headerShown: false,
         }}>
+        <Stack.Screen name="HomePage" component={Home} />
         <Stack.Screen name="Map" component={DemoMap} />
         <Stack.Screen name="Login" component={Login} />
-
+        <Stack.Screen name="Event" component={Event} />
         <Stack.Screen name="Register" component={Register} />
       </Stack.Navigator>
       <FlashMessage position="top" />
