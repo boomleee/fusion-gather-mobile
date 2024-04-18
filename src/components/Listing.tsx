@@ -12,22 +12,30 @@ interface ListingProps {
 
 const Listing = ({data, onPress, id}: ListingProps) => {
   const [eventImage, setEventImage] = useState<string>('');
-
+  const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
     const fetchData = async () => {
       try {
         const image = await getImagesByEventId(data?.id);
         setEventImage(image[0]?.url);
+        setIsLoading(false);
       } catch (error) {
         console.error('Error fetching follower count:', error);
       }
     };
     fetchData();
   });
+
   return (
     <Pressable onPress={() => onPress(id)} style={{flex: 1}}>
       <View style={styles.listing}>
-        <Image source={{uri: eventImage}} style={styles.image} />
+        {isLoading ? (
+          <View style={styles.image}>
+            <Text>Loading</Text>
+          </View>
+        ) : (
+          <Image source={{uri: eventImage}} style={styles.image} />
+        )}
         <View
           style={{
             flexDirection: 'row',

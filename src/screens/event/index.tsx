@@ -1,12 +1,20 @@
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable react/self-closing-comp */
 import React, {useEffect, useState} from 'react';
-import {StatusBar, StyleSheet, Text, View, Image} from 'react-native';
+import {
+  StatusBar,
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  Pressable,
+} from 'react-native';
 import Icon2 from 'react-native-vector-icons/EvilIcons';
 import {RouteProp} from '@react-navigation/native';
 import {EventType} from '../../interfaces/event.interface';
 import {getEventById, getImagesByEventId} from '../../actions/event';
 import {ScrollView} from 'react-native-gesture-handler';
+import BoothList from './Components/BoothList';
 
 type RootStackParamList = {
   Event: {id: number};
@@ -15,10 +23,11 @@ type RootStackParamList = {
 type EventScreenRouteProp = RouteProp<RootStackParamList, 'Event'>;
 
 type Props = {
+  navigation: any;
   route: EventScreenRouteProp;
 };
 
-function Event({route}: Props) {
+function Event({navigation, route}: Props) {
   const {id} = route.params;
   const [event, setEvent] = useState<EventType>();
   const [image, setIamge] = useState();
@@ -37,6 +46,13 @@ function Event({route}: Props) {
     };
     fetchData();
   });
+  if (isLoading) {
+    return (
+      <View>
+        <Text>Loading</Text>
+      </View>
+    );
+  }
   return (
     <View style={styles.container}>
       <StatusBar backgroundColor={'#0C0F14'} />
@@ -49,7 +65,7 @@ function Event({route}: Props) {
           <Image source={{uri: image}} style={styles.image} />
 
           <View style={styles.infoContainer}>
-            <Text style={styles.name}>{event?.location}</Text>
+            <Text style={styles.name}>{event?.title}</Text>
             <View
               style={{
                 flexDirection: 'row',
@@ -61,9 +77,15 @@ function Event({route}: Props) {
 
                 alignContent: 'flex-start',
               }}>
-              <Icon2 name="location" size={26} color={'#E36414'} />
+              <Pressable
+                onPress={() => {
+                  navigation.navigate('Map');
+                }}>
+                <Icon2 name="location" size={26} color={'#E36414'} />
+                <Text style={styles.location}>{event?.location}</Text>
+              </Pressable>
             </View>
-            <Text style={styles.description}>{event?.description}</Text>
+            {/* <Text style={styles.description}>{event?.description}</Text> */}
 
             <View style={styles.divider} />
             {/* <View style={{gap: 12, flexDirection: 'column'}}>
@@ -71,6 +93,7 @@ function Event({route}: Props) {
                 <Utility key={ultility.id} utility={ultility} />
               ))}
             </View> */}
+            <BoothList eventId={event?.id}></BoothList>
           </View>
           {/* <View style={styles.container_map}>
             <MapView
@@ -183,7 +206,7 @@ const styles = StyleSheet.create({
   },
   location: {
     width: '90%',
-    fontSize: 20,
+    fontSize: 15,
     fontFamily: 'mon-sb',
     color: '#000',
   },

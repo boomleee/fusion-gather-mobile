@@ -26,7 +26,7 @@ export const getImagesByEventId = async (eventId: number) => {
       headers: {
         'Content-Type': 'application/json',
         Authorization:
-          'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsImlhdCI6MTcxMjk5MzU0NCwiZXhwIjoxNzEzMDI5NTQ0fQ.jVW1QrIsv69dyj79FfjkZ8c4-XYuWCdCu_94IKjvBUY',
+          'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsImlhdCI6MTcxMzI3NTQxMiwiZXhwIjoxNzEzMzExNDEyfQ.iuxTr0U-6bniA1u7nDDH7QR5tzwYB6NcyTsA9KRiF_o',
       },
     });
     if (!res.ok) {
@@ -47,7 +47,7 @@ export const getEventById = async (id: number) => {
       headers: {
         'Content-Type': 'application/json',
         Authorization:
-          'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsImlhdCI6MTcxMjk5MzU0NCwiZXhwIjoxNzEzMDI5NTQ0fQ.jVW1QrIsv69dyj79FfjkZ8c4-XYuWCdCu_94IKjvBUY',
+          'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsImlhdCI6MTcxMzI3NTQxMiwiZXhwIjoxNzEzMzExNDEyfQ.iuxTr0U-6bniA1u7nDDH7QR5tzwYB6NcyTsA9KRiF_o',
       },
     });
     if (!res.ok) {

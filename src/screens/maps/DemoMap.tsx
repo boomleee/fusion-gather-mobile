@@ -1,6 +1,6 @@
-import {View, Text, StyleSheet, Platform} from 'react-native';
+import {View, StyleSheet} from 'react-native';
 import React, {useEffect, useRef, useState} from 'react';
-import MapView, {Marker, AnimatedRegion} from 'react-native-maps';
+import MapView, {Marker} from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
 import {GOOGLE_MAP_KEY} from '../../utils/const/googleMapKey';
 import {
