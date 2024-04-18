@@ -16,7 +16,7 @@ const ScanQR = ({navigation}: any) => {
     }
     const userId = await AsyncStorage.getItem('userId');
     if (userId) {
-      const res = await checkQR(parseInt(userId, 10), jsonObject?.id);
+      const res = await checkQR(parseInt(userId, 10), jsonObject?.ticketId);
       if (res.status === 404) {
         setInfo('INVALID QR CODE');
       } else {
