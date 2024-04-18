@@ -1,10 +1,30 @@
+/* eslint-disable react-native/no-inline-styles */
 /* eslint-disable prettier/prettier */
-import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import React from 'react';
+import {
+  Alert,
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import React, {useState} from 'react';
 import {colors} from '../../utils/const/colors';
 import {TextInput} from 'react-native-gesture-handler';
+import {login} from '../../actions/user';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const Login = () => {
+const Login = ({navigation}: any) => {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const handleLogin = async () => {
+    const res = await login(username, password);
+    if (res.statusCode === 404 || res.statusCode === 500) {
+      Alert.alert('Your account is not available');
+    }
+    await AsyncStorage.setItem('userId', res.user.id.toString());
+    navigation.navigate('ScanQR')
+  };
   return (
     <View style={styles.container}>
       <View style={styles.loginForm}>
@@ -20,42 +40,28 @@ const Login = () => {
           }}>
           Log in
         </Text>
-        <TouchableOpacity style={styles.loginButton}>
-          <Image
-            source={require('../../utils/images/googleIcon.png')}
-            style={{
-              width: 24,
-              height: 24,
-              marginRight: 10,
-            }}
-          />
-          <Text style={styles.buttonText}>Continue with Google</Text>
-        </TouchableOpacity>
         <Text style={{marginVertical: 25, fontFamily: 'Roboto'}}>
           or enter your Credential
         </Text>
 
-        <TextInput style={styles.input} placeholder="Username" />
         <TextInput
           style={styles.input}
+          value={username}
+          placeholder="Username"
+          onChangeText={text => setUsername(text)}
+        />
+        <TextInput
+          style={styles.input}
+          value={password}
           placeholder="Password"
+          onChangeText={text => setPassword(text)}
           secureTextEntry
         />
         <TouchableOpacity
+          onPress={handleLogin}
           style={[styles.loginButton, {backgroundColor: colors.hightlight}]}>
           <Text style={styles.buttonText}>Log in</Text>
         </TouchableOpacity>
-        <TouchableOpacity>
-          <Text style={styles.forgottenPassword}>Forgotten password?</Text>
-        </TouchableOpacity>
-        <View style={styles.signupContainer}>
-          <Text style={styles.dontHaveAccountText}>
-            Don’t have an account?{' '}
-          </Text>
-          <TouchableOpacity>
-            <Text style={styles.signupText}>Sign up</Text>
-          </TouchableOpacity>
-        </View>
       </View>
     </View>
   );
