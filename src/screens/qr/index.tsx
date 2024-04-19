@@ -9,10 +9,18 @@ const ScanQR = ({navigation}: any) => {
   const handleScan = async (e: string) => {
     const jsonObject = JSON.parse(e);
     const eventId = jsonObject.eventId;
+    const boothId = jsonObject.boothId;
     if (eventId) {
       const id = parseInt(eventId, 10);
       navigation.navigate('Event', {
         id,
+      });
+    }
+    if (boothId) {
+      const id = parseInt(boothId, 10);
+      navigation.navigate('Booth', {
+        id,
+        imageUrl: '',
       });
     }
     const ticketId = jsonObject.ticketId;

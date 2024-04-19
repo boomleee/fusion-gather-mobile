@@ -11,7 +11,7 @@ import {
 import React, {useEffect, useState} from 'react';
 import {RouteProp} from '@react-navigation/native';
 import {BoothType} from '../../interfaces/booth.interface';
-import {getBoothById} from '../../actions/booth';
+import {getBoothById, getImagesByBoothId} from '../../actions/booth';
 import {ScrollView} from 'react-native-gesture-handler';
 import HTML from 'react-native-render-html';
 
@@ -26,6 +26,7 @@ type Props = {
 const BoothPage = ({navigation, route}: Props) => {
   const {id, imageURL} = route.params;
   const [booth, setBooth] = useState<BoothType>();
+  const [image, setImage] = useState();
   const [isLoading, setIsLoading] = useState(true);
   const {width} = useWindowDimensions();
 
@@ -33,6 +34,10 @@ const BoothPage = ({navigation, route}: Props) => {
     const fetchData = async () => {
       try {
         const rs = await getBoothById(id);
+        if (!imageURL) {
+          const res = await getImagesByBoothId(id);
+          setImage(res[0]?.url);
+        }
         setBooth(rs);
         setIsLoading(false);
       } catch (error) {
@@ -56,7 +61,10 @@ const BoothPage = ({navigation, route}: Props) => {
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{paddingBottom: 100}}
           scrollEventThrottle={16}>
-          <Image source={{uri: imageURL}} style={styles.image} />
+          <Image
+            source={{uri: imageURL ? imageURL : image}}
+            style={styles.image}
+          />
           <View style={styles.infoContainer}>
             <Text style={styles.name}>{booth?.name}</Text>
             <View
