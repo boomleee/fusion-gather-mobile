@@ -43,21 +43,27 @@ const BoothList = ({eventId: eventId}: Props) => {
       try {
         const response = await getBoothByEventId(eventId);
         const data: BoothType[] = response.data;
-        setBooths(data);
+        if (response.data) {
+          setBooths(data);
+        }
       } catch (error) {
         console.error('Error fetching booth data:', error);
       }
     };
 
     fetchData();
-  });
-  const BoothItem = ({item}: {item: BoothType}) => <Text>{item.name}</Text>;
+  }, []);
+  const BoothItem = ({item}: {item: BoothType}) => (
+    <Text style={{color: 'black'}}>{item.name}</Text>
+  );
   return (
     <View>
-      <Text style={{fontSize: 30}}>BoothList</Text>
-      {booths?.map(booth => (
-        <BoothItem key={booth.id} item={booth} />
-      ))}
+      <Text style={{fontSize: 30, color: 'black'}}>BoothList</Text>
+      {booths && booths.length > 0 ? (
+        booths.map(booth => <BoothItem key={booth.id} item={booth} />)
+      ) : (
+        <Text style={{color: 'black'}}>This event has no booth</Text>
+      )}
     </View>
   );
 };

@@ -29,10 +29,6 @@ export const getImagesByEventId = async (eventId: number) => {
           'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsImlhdCI6MTcxMzI3NTQxMiwiZXhwIjoxNzEzMzExNDEyfQ.iuxTr0U-6bniA1u7nDDH7QR5tzwYB6NcyTsA9KRiF_o',
       },
     });
-    if (!res.ok) {
-      console.error(`Request failed with status: ${res.status}`);
-      return await res.json();
-    }
     return await res.json();
   } catch (error: any) {
     console.log(error);

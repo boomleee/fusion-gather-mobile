@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {FlatList, StyleSheet, View} from 'react-native';
+import {FlatList, Image, Pressable, StyleSheet, Text, View} from 'react-native';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 
 import Listing from '../../components/Listing';
@@ -17,11 +17,17 @@ const Home = ({navigation}: any) => {
     fetchData();
   });
 
-  //   const handlePressMap = () => {
-  //     navigation.navigate('Map', {markers: currentRooms});
-  //   };
   return (
     <GestureHandlerRootView style={styles.screenContainer}>
+      <View style={styles.headerContainer}>
+        <Text style={styles.headerText}>FusionGather</Text>
+        <Pressable onPress={() => navigation.navigate('ScanQR')}>
+          <Image
+            source={require('./../../assets/images/qr-code.png')}
+            style={styles.headerImage}
+          />
+        </Pressable>
+      </View>
       <View style={{marginTop: -2, zIndex: -1, position: 'relative'}}>
         <FlatList
           data={data}
@@ -49,6 +55,28 @@ const styles = StyleSheet.create({
   screenContainer: {
     flex: 1,
     backgroundColor: 'white',
+  },
+  headerContainer: {
+    height: 40,
+    width: '100%',
+    backgroundColor: '#ff8e3c',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 10,
+  },
+  headerText: {
+    color: 'white',
+    fontWeight: 'bold',
+    fontSize: 20,
+  },
+  headerIcon: {
+    fontSize: 24,
+    color: 'white',
+  },
+  headerImage: {
+    width: 24,
+    height: 24,
   },
   mapStyle: {
     width: 400,

@@ -10,14 +10,16 @@ const ScanQR = ({navigation}: any) => {
     const jsonObject = JSON.parse(e);
     const eventId = jsonObject.eventId;
     if (eventId) {
+      const id = parseInt(eventId, 10);
       navigation.navigate('Event', {
-        eventId,
+        id,
       });
     }
+    const ticketId = jsonObject.ticketId;
     const userId = await AsyncStorage.getItem('userId');
     if (userId) {
-      const res = await checkQR(parseInt(userId, 10), jsonObject?.ticketId);
-      if (res.status === 404) {
+      const res = await checkQR(parseInt(userId, 10), parseInt(ticketId, 10));
+      if (res.status !== 200) {
         setInfo('INVALID QR CODE');
       } else {
         Alert.alert('Valid Ticket');
@@ -34,8 +36,9 @@ const ScanQR = ({navigation}: any) => {
             <Text style={styles.textBold}>{info}</Text>
           </View>
         }
-        containerStyle={styles.scannerContainer}
-        cameraStyle={styles.camera}
+        showMarker={true}
+        reactivate={true}
+        reactivateTimeout={500}
       />
     </View>
   );
@@ -57,8 +60,8 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   camera: {
-    width: '50%', // Full width of the camera view
-    height: '50%', // Full height of the camera view to fill the area
+    width: '50%',
+    height: '50%',
   },
   centerText: {
     flex: 1,

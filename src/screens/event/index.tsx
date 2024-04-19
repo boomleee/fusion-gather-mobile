@@ -56,126 +56,35 @@ function Event({navigation, route}: Props) {
   return (
     <View style={styles.container}>
       <StatusBar backgroundColor={'#0C0F14'} />
-
       <View style={{position: 'relative'}}>
         <ScrollView
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{paddingBottom: 100}}
           scrollEventThrottle={16}>
           <Image source={{uri: image}} style={styles.image} />
-
           <View style={styles.infoContainer}>
             <Text style={styles.name}>{event?.title}</Text>
             <View
               style={{
                 flexDirection: 'row',
                 width: '100%',
-                // alignItems: 'center',
                 marginTop: 8,
                 paddingHorizontal: 8,
                 paddingBottom: 2,
-
                 alignContent: 'flex-start',
               }}>
               <Pressable
                 onPress={() => {
                   navigation.navigate('Map');
                 }}>
-                <Icon2 name="location" size={26} color={'#E36414'} />
                 <Text style={styles.location}>{event?.location}</Text>
               </Pressable>
             </View>
-            {/* <Text style={styles.description}>{event?.description}</Text> */}
-
             <View style={styles.divider} />
-            {/* <View style={{gap: 12, flexDirection: 'column'}}>
-              {utilities.map(ultility => (
-                <Utility key={ultility.id} utility={ultility} />
-              ))}
-            </View> */}
-            <BoothList eventId={event?.id}></BoothList>
+            <BoothList eventId={event?.id || 0}></BoothList>
           </View>
-          {/* <View style={styles.container_map}>
-            <MapView
-              style={{flex: 1}}
-              initialRegion={{
-                latitude: roomDetail.event.coordinate.latitude,
-                longitude: roomDetail.event.coordinate.longitude,
-                latitudeDelta: 0.1,
-                longitudeDelta: 0.05,
-              }}>
-              <Marker coordinate={roomDetail.event.coordinate}></Marker>
-            </MapView>
-          </View> */}
         </ScrollView>
       </View>
-
-      {/* <View
-        style={{
-          position: 'absolute',
-          height: 70,
-          bottom: 0,
-          left: 0,
-          right: 0,
-          backgroundColor: '#fff',
-          paddingVertical: 10,
-          paddingHorizontal: 20,
-          borderTopColor: '#5E5D5E',
-          borderTopWidth: StyleSheet.hairlineWidth,
-        }}>
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-          }}>
-          <TouchableOpacity style={styles.footerText}>
-            <Text style={styles.footerPrice}>
-              VND {formatNumberWithCommas(price || '')}
-            </Text>
-            <Text style={{color: '#5E5D5E', fontSize: 12}}>month</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            onPress={() => {
-              if (userInfo) {
-                navigation.navigate('PrepareContract', {
-                  id: id,
-                  overView: {
-                    price: price,
-                    image: images[0],
-                    totalRating: ratingDetail.totalRating,
-                    numberOfReviews: ratingDetail.ratings.length,
-                    district: event.district,
-                    province: event.city,
-                    address: event.address,
-                  },
-                });
-              } else {
-                navigation.navigate('Login');
-              }
-            }}
-            style={[
-              {
-                backgroundColor: '#E36414',
-                height: 50,
-                borderRadius: 8,
-                justifyContent: 'center',
-                alignItems: 'center',
-              },
-              {paddingRight: 20, paddingLeft: 20},
-            ]}>
-            <Text
-              style={{
-                color: '#fff',
-                fontSize: 16,
-                fontFamily: 'mon-b',
-              }}>
-              Prepare contract
-            </Text>
-          </TouchableOpacity>
-        </View>
-      </View> */}
     </View>
   );
 }
@@ -188,7 +97,6 @@ const styles = StyleSheet.create({
   image: {
     width: '100%',
     height: 300,
-    borderRadius: 10,
     marginBottom: 8,
   },
 
@@ -205,7 +113,7 @@ const styles = StyleSheet.create({
     paddingTop: 12,
   },
   location: {
-    width: '90%',
+    width: '100%',
     fontSize: 15,
     fontFamily: 'mon-sb',
     color: '#000',
