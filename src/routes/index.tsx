@@ -7,6 +7,7 @@ import FlashMessage from 'react-native-flash-message';
 import Home from '../screens/home';
 import Event from '../screens/event';
 import QRCode from '../screens/qr';
+import BoothPage from '../screens/booth';
 const Stack = createStackNavigator();
 
 const MainRoute = () => {
@@ -21,6 +22,7 @@ const MainRoute = () => {
         <Stack.Screen name="HomePage" component={Home} />
         <Stack.Screen name="Map" component={DemoMap} />
         <Stack.Screen name="Event" component={Event} />
+        <Stack.Screen name="Booth" component={BoothPage} />
       </Stack.Navigator>
       <FlashMessage position="top" />
     </NavigationContainer>

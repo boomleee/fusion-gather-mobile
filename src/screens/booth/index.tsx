@@ -1,46 +1,39 @@
 /* eslint-disable react-native/no-inline-styles */
-/* eslint-disable react/self-closing-comp */
-import React, {useEffect, useState} from 'react';
 import {
+  Image,
+  Pressable,
   StatusBar,
   StyleSheet,
   Text,
   View,
-  Image,
-  Pressable,
   useWindowDimensions,
 } from 'react-native';
+import React, {useEffect, useState} from 'react';
 import {RouteProp} from '@react-navigation/native';
-import {EventType} from '../../interfaces/event.interface';
-import {getEventById, getImagesByEventId} from '../../actions/event';
+import {BoothType} from '../../interfaces/booth.interface';
+import {getBoothById} from '../../actions/booth';
 import {ScrollView} from 'react-native-gesture-handler';
-import BoothList from './Components/BoothList';
 import HTML from 'react-native-render-html';
 
 type RootStackParamList = {
-  Event: {id: number};
+  Booth: {id: number; imageURL: string};
 };
-
-type EventScreenRouteProp = RouteProp<RootStackParamList, 'Event'>;
-
+type BoothScreenRouteProp = RouteProp<RootStackParamList, 'Booth'>;
 type Props = {
   navigation: any;
-  route: EventScreenRouteProp;
+  route: BoothScreenRouteProp;
 };
-
-function Event({navigation, route}: Props) {
-  const {id} = route.params;
-  const [event, setEvent] = useState<EventType>();
-  const [image, setIamge] = useState();
+const BoothPage = ({navigation, route}: Props) => {
+  const {id, imageURL} = route.params;
+  const [booth, setBooth] = useState<BoothType>();
   const [isLoading, setIsLoading] = useState(true);
   const {width} = useWindowDimensions();
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const rs = await getEventById(id);
-        const imageRes = await getImagesByEventId(id);
-        setEvent(rs);
-        setIamge(imageRes[0]?.url);
+        const rs = await getBoothById(id);
+        setBooth(rs);
         setIsLoading(false);
       } catch (error) {
         console.error('Error fetching follower count:', error);
@@ -63,9 +56,9 @@ function Event({navigation, route}: Props) {
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{paddingBottom: 100}}
           scrollEventThrottle={16}>
-          <Image source={{uri: image}} style={styles.image} />
+          <Image source={{uri: imageURL}} style={styles.image} />
           <View style={styles.infoContainer}>
-            <Text style={styles.name}>{event?.title}</Text>
+            <Text style={styles.name}>{booth?.name}</Text>
             <View
               style={{
                 flexDirection: 'row',
@@ -79,28 +72,26 @@ function Event({navigation, route}: Props) {
                 onPress={() => {
                   navigation.navigate('Map');
                 }}>
-                <Text style={styles.location}>{event?.location}</Text>
+                <Text style={styles.location}>LOCATION</Text>
               </Pressable>
             </View>
             <View style={styles.divider} />
             <Text style={{fontSize: 30, color: 'black'}}>Description</Text>
             <View>
               <HTML
-                source={{html: event?.description || ''}}
+                source={{html: booth?.description || ''}}
                 baseStyle={{color: 'black'}}
                 contentWidth={width}
               />
             </View>
-            <View style={styles.divider} />
-            <BoothList
-              eventId={event?.id || 0}
-              navigation={navigation}></BoothList>
           </View>
         </ScrollView>
       </View>
     </View>
   );
-}
+};
+
+export default BoothPage;
 
 const styles = StyleSheet.create({
   container: {
@@ -242,5 +233,3 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
 });
-
-export default Event;
