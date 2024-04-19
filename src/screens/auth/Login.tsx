@@ -23,7 +23,7 @@ const Login = ({navigation}: any) => {
       Alert.alert('Your account is not available');
     }
     await AsyncStorage.setItem('userId', res.user.id.toString());
-    navigation.navigate('ScanQR')
+    navigation.navigate('HomePage')
   };
   return (
     <View style={styles.container}>
@@ -40,20 +40,22 @@ const Login = ({navigation}: any) => {
           }}>
           Log in
         </Text>
-        <Text style={{marginVertical: 25, fontFamily: 'Roboto'}}>
-          or enter your Credential
+        <Text style={{marginVertical: 25, fontFamily: 'Roboto', color: colors.hightlight}}>
+          Enter your Credential
         </Text>
 
         <TextInput
           style={styles.input}
           value={username}
           placeholder="Username"
+          placeholderTextColor="#ff8e3c"
           onChangeText={text => setUsername(text)}
         />
         <TextInput
           style={styles.input}
           value={password}
           placeholder="Password"
+          placeholderTextColor="#ff8e3c"
           onChangeText={text => setPassword(text)}
           secureTextEntry
         />
@@ -103,6 +105,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: '#000000',
     marginHorizontal: 30,
+    color: colors.hightlight,
   },
   loginButton: {
     width: '80%',

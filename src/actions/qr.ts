@@ -1,11 +1,8 @@
 import {BASE_URL} from '../utils/const/api';
 
 export const checkQR = async (userId: number, ticketId: number) => {
-  const res = await fetch(`${BASE_URL}/qr-code/check`, {
+  const res = await fetch(`${BASE_URL}/qr-code/check/${userId}/${ticketId}`, {
     method: 'Get',
-    body: JSON.stringify({
-      id,
-    }),
     headers: {
       'Content-Type': 'application/json',
     },

@@ -13,10 +13,7 @@ export const getBoothByEventId = async (eventId: number) => {
 
     const responseData = await res.json();
 
-    if (!res.ok) {
-      console.error(`Request failed with status: ${res.status}`);
-      throw new Error(responseData.message || 'Failed to fetch data');
-    }
+
 
     return {status: res.status, data: responseData};
   } catch (error: any) {
