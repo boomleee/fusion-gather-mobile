@@ -13,8 +13,6 @@ export const getBoothByEventId = async (eventId: number) => {
 
     const responseData = await res.json();
 
-
-
     return {status: res.status, data: responseData};
   } catch (error: any) {
     console.error('Error fetching booth data:', error);
@@ -22,5 +20,43 @@ export const getBoothByEventId = async (eventId: number) => {
       status: 500,
       error: error.message || 'An error occurred while fetching booth data',
     };
+  }
+};
+
+export const getImagesByBoothId = async (boothId: number) => {
+  try {
+    const res = await fetch(`${BASE_URL}/image/booth/${boothId}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    if (!res.ok) {
+      console.error(`Request failed with status: ${res.status}`);
+      return await res.json();
+    }
+    return await res.json();
+  } catch (error: any) {
+    console.log(error);
+    return null;
+  }
+};
+
+export const getBoothById = async (boothId: number) => {
+  try {
+    const res = await fetch(`${BASE_URL}/booth/${boothId}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    if (!res.ok) {
+      console.error(`Get booth failed with status: ${res.status}`);
+      return await res.json();
+    }
+    return res.json();
+  } catch (error: any) {
+    console.log(error);
+    return null;
   }
 };

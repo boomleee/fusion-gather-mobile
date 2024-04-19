@@ -1,23 +1,23 @@
 /* eslint-disable react-native/no-inline-styles */
+import {View, Text, Pressable, StyleSheet, Image} from 'react-native';
 import React, {useEffect, useState} from 'react';
-import {Image, Pressable, StyleSheet, Text, View} from 'react-native';
-import {EventType} from '../interfaces/event.interface';
-import {getImagesByEventId} from '../actions/event';
+import {BoothType} from '../../../interfaces/booth.interface';
+import {getImagesByBoothId} from '../../../actions/booth';
 
-interface ListingProps {
-  data: EventType;
+interface ItemProps {
+  data: BoothType;
   id: number;
-  onPress: (id: number) => void;
+  onPress: (id: number, imageURL: string) => void;
 }
-
-const Listing = ({data, onPress, id}: ListingProps) => {
-  const [eventImage, setEventImage] = useState<string>('');
+const BoothItemList = ({data, onPress, id}: ItemProps) => {
+  const [image, setImage] = useState();
   const [isLoading, setIsLoading] = useState(true);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const image = await getImagesByEventId(data?.id);
-        setEventImage(image[0]?.url);
+        const image = await getImagesByBoothId(data?.id);
+        setImage(image[0]?.url);
         setIsLoading(false);
       } catch (error) {
         console.error('Error fetching follower count:', error);
@@ -25,16 +25,15 @@ const Listing = ({data, onPress, id}: ListingProps) => {
     };
     fetchData();
   }, []);
-
   return (
-    <Pressable onPress={() => onPress(id)} style={{flex: 1}}>
+    <Pressable onPress={() => onPress(id, image || '')} style={{flex: 1}}>
       <View style={styles.listing}>
         {isLoading ? (
           <View style={styles.image}>
             <Text>Loading</Text>
           </View>
         ) : (
-          <Image source={{uri: eventImage}} style={styles.image} />
+          <Image source={{uri: image}} style={styles.image} />
         )}
         <View
           style={{
@@ -50,16 +49,13 @@ const Listing = ({data, onPress, id}: ListingProps) => {
               color: '#000',
               fontWeight: '700',
             }}>
-            {data.title}
+            {data.name}
           </Text>
         </View>
       </View>
     </Pressable>
   );
 };
-
-export default Listing;
-
 const styles = StyleSheet.create({
   listing: {
     paddingHorizontal: 24,
@@ -89,3 +85,5 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFF',
   },
 });
+
+export default BoothItemList;
