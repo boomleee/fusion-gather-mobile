@@ -16,6 +16,8 @@ import {getEventById, getImagesByEventId} from '../../actions/event';
 import {ScrollView} from 'react-native-gesture-handler';
 import BoothList from './Components/BoothList';
 import HTML from 'react-native-render-html';
+import {BoothType} from '../../interfaces/booth.interface';
+import {getBoothByEventId} from '../../actions/booth';
 
 type RootStackParamList = {
   Event: {id: number};
@@ -34,13 +36,18 @@ function Event({navigation, route}: Props) {
   const [image, setIamge] = useState();
   const [isLoading, setIsLoading] = useState(true);
   const {width} = useWindowDimensions();
+  const [booths, setBooths] = useState<BoothType[]>();
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         const rs = await getEventById(id);
         const imageRes = await getImagesByEventId(id);
+        const response = await getBoothByEventId(id);
+        const data: BoothType[] = response.data;
         setEvent(rs);
         setIamge(imageRes[0]?.url);
+        setBooths(data);
         setIsLoading(false);
       } catch (error) {
         console.error('Error fetching follower count:', error);
@@ -77,7 +84,7 @@ function Event({navigation, route}: Props) {
               }}>
               <Pressable
                 onPress={() => {
-                  navigation.navigate('Map');
+                  navigation.navigate('Map', {id, event, booths});
                 }}>
                 <Text style={styles.location}>{event?.location}</Text>
               </Pressable>

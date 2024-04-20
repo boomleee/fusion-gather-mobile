@@ -7,12 +7,25 @@ import {
   getCurrentLocation,
   locationPermission,
 } from '../../utils/helper/helperFunction';
+import {Image} from 'react-native';
+import {RouteProp} from '@react-navigation/native';
+import {EventType} from '../../interfaces/event.interface';
+import {BoothType} from '../../interfaces/booth.interface';
 interface Coordinates {
   latitude: number;
   longitude: number;
 }
 
-const DemoMap = () => {
+type MapStackParamList = {
+  Event: {id: number; event: EventType; booths: BoothType[]};
+};
+type MapScreenRouteProp = RouteProp<MapStackParamList, 'Event'>;
+type Props = {
+  route: MapScreenRouteProp;
+};
+
+const DemoMap = ({route}: Props) => {
+  const {id, event, booths} = route.params;
   const mapRef = useRef<MapView>(null);
 
   // const [state, setState] = useState<{
@@ -44,6 +57,10 @@ const DemoMap = () => {
       getLiveLocation();
     }, 4000);
   });
+
+  const currentLocationIcon = require('./../../assets/images/current-location.png');
+  const eventLocation = require('./../../assets/images/billboard.png');
+  const boothLocation = require('./../../assets/images/booth.png');
 
   const getLiveLocation = async () => {
     const locPermissionDenied = await locationPermission();
@@ -88,9 +105,34 @@ const DemoMap = () => {
           coordinate={{
             latitude: location.latitude,
             longitude: location.longitude,
-          }}
-        />
-        <MapViewDirections
+          }}>
+          <View style={styles.iconContainer}>
+            <Image source={currentLocationIcon} style={styles.icon} />
+          </View>
+        </Marker>
+        <Marker
+          coordinate={{
+            latitude: parseFloat(event.lat + ''),
+            longitude: parseFloat(event.lng + ''),
+          }}>
+          <View style={styles.iconContainer}>
+            <Image source={eventLocation} style={styles.icon} />
+          </View>
+        </Marker>
+        {booths.length > 0 &&
+          booths.map((booth, index) => (
+            <Marker
+              key={index}
+              coordinate={{
+                latitude: parseFloat(booth.latitude + ''),
+                longitude: parseFloat(booth.longitude + ''),
+              }}>
+              <View style={styles.iconContainer}>
+                <Image source={boothLocation} style={styles.icon} />
+              </View>
+            </Marker>
+          ))}
+        {/* <MapViewDirections
           origin={{
             latitude: location.latitude,
             longitude: location.longitude,
@@ -102,7 +144,7 @@ const DemoMap = () => {
           apikey={GOOGLE_MAP_KEY}
           strokeWidth={3}
           strokeColor="red"
-        />
+        /> */}
       </MapView>
     </View>
   );
@@ -122,5 +164,15 @@ const styles = StyleSheet.create({
   },
   map: {
     flex: 1,
+  },
+  iconContainer: {
+    width: 40,
+    height: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  icon: {
+    width: 40,
+    height: 40,
   },
 });
