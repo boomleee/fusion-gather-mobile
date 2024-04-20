@@ -30,6 +30,7 @@ const ScanQR = ({navigation}: any) => {
       if (res.status !== 200) {
         setInfo('INVALID QR CODE');
       } else {
+        setInfo('VALID TICKET. SCAN QR CODE:');
         Alert.alert('Valid Ticket');
       }
     }

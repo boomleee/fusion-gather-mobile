@@ -7,5 +7,5 @@ export const checkQR = async (userId: number, ticketId: number) => {
       'Content-Type': 'application/json',
     },
   });
-  return await res.json();
+  return await res;
 };
