@@ -1,10 +1,9 @@
 /* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable react-native/no-inline-styles */
-import {View, Text, StyleSheet, Pressable} from 'react-native';
+import {View, Text, StyleSheet} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {getBoothByEventId} from '../../../actions/booth';
 import {FlatList, GestureHandlerRootView} from 'react-native-gesture-handler';
-import Listing from '../../../components/Listing';
 import {BoothType} from '../../../interfaces/booth.interface';
 import BoothItemList from './BoothItem';
 
