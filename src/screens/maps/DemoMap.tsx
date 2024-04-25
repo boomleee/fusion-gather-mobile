@@ -1,4 +1,4 @@
-import {View, StyleSheet} from 'react-native';
+import {View, StyleSheet, Text} from 'react-native';
 import React, {useEffect, useRef, useState} from 'react';
 import MapView, {Marker} from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
@@ -28,8 +28,8 @@ const DemoMap = ({route}: Props) => {
   const {id, event, booths} = route.params;
   const mapRef = useRef<MapView>(null);
   const [location, setLocation] = useState<Coordinates>({
-    latitude: 0,
-    longitude: 0,
+    latitude: 15.968588,
+    longitude: 108.260499,
   });
   useEffect(() => {
     setTimeout(() => {
@@ -60,8 +60,8 @@ const DemoMap = ({route}: Props) => {
         initialRegion={{
           latitude: location.latitude,
           longitude: location.longitude,
-          latitudeDelta: 0.0922,
-          longitudeDelta: 0.0421,
+          latitudeDelta: 0.01,
+          longitudeDelta: 0.01,
         }}>
         <Marker
           coordinate={{
@@ -91,6 +91,7 @@ const DemoMap = ({route}: Props) => {
               }}>
               <View style={styles.iconContainer}>
                 <Image source={boothLocation} style={styles.icon} />
+                <Text style={styles.boothName}>{booth.name}</Text>
               </View>
             </Marker>
           ))}
@@ -115,13 +116,16 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   iconContainer: {
-    width: 40,
-    height: 40,
-    justifyContent: 'center',
     alignItems: 'center',
   },
   icon: {
     width: 40,
     height: 40,
+  },
+  boothName: {
+    marginTop: 5,
+    color: '#ff8e3c',
+    fontWeight: 'bold',
+    fontSize: 16,
   },
 });
