@@ -27,27 +27,6 @@ type Props = {
 const DemoMap = ({route}: Props) => {
   const {id, event, booths} = route.params;
   const mapRef = useRef<MapView>(null);
-
-  // const [state, setState] = useState<{
-  //   curLoc: Coordinates;
-  //   destinationCords: Coordinates;
-  //   isLoading: boolean;
-  //   coordinate: AnimatedRegion;
-  // }>({
-  //   curLoc: {
-  //     latitude: 0,
-  //     longitude: 0,
-  //   },
-  //   destinationCords: {
-  //     latitude: 0,
-  //     longitude: 0,
-  //   },
-  //   isLoading: false,
-  //   coordinate: new AnimatedRegion({
-  //     latitude: 0,
-  //     longitude: 0,
-  //   }),
-  // });
   const [location, setLocation] = useState<Coordinates>({
     latitude: 0,
     longitude: 0,
@@ -55,7 +34,7 @@ const DemoMap = ({route}: Props) => {
   useEffect(() => {
     setTimeout(() => {
       getLiveLocation();
-    }, 4000);
+    }, 1000);
   });
 
   const currentLocationIcon = require('./../../assets/images/current-location.png');
@@ -66,28 +45,11 @@ const DemoMap = ({route}: Props) => {
     const locPermissionDenied = await locationPermission();
     if (locPermissionDenied) {
       const {latitude, longitude} = await getCurrentLocation();
-      console.log('get live location after 4 second');
+      console.log('get live location after 1 second');
       console.log(latitude, longitude);
       setLocation({latitude, longitude});
-
-      // animate(latitude, longitude);
-      // setState({
-      //   ...state,
-      //   curLoc: {latitude, longitude},
-      //   coordinate: new AnimatedRegion({
-      //     latitude: latitude,
-      //     longitude: longitude,
-      //   }),
-      // });
     }
   };
-
-  // const animate = (latitude: number, longitude: number) => {
-  //   const newCoordinate: Coordinates = {latitude, longitude};
-  //   if (markerRef.current) {
-  //     markerRef.current.animateMarkerToCoordinate(newCoordinate, 7000);
-  //   }
-  // };
 
   return (
     <View style={styles.page}>
@@ -132,19 +94,6 @@ const DemoMap = ({route}: Props) => {
               </View>
             </Marker>
           ))}
-        {/* <MapViewDirections
-          origin={{
-            latitude: location.latitude,
-            longitude: location.longitude,
-          }}
-          destination={{
-            latitude: 37.78825,
-            longitude: -122.4322,
-          }}
-          apikey={GOOGLE_MAP_KEY}
-          strokeWidth={3}
-          strokeColor="red"
-        /> */}
       </MapView>
     </View>
   );

@@ -60,3 +60,14 @@ export const getBoothById = async (boothId: number) => {
     return null;
   }
 };
+
+export const visitorBooth = async (userId: number, boothId: number) => {
+  const res = await fetch(`${BASE_URL}/boothvisitor/${userId}/${boothId}`, {
+    method: 'Get',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+  return await res;
+};
+

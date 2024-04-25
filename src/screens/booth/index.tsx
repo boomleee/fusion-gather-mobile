@@ -1,3 +1,4 @@
+/* eslint-disable react/self-closing-comp */
 /* eslint-disable react-native/no-inline-styles */
 import {
   Image,
@@ -75,14 +76,7 @@ const BoothPage = ({navigation, route}: Props) => {
                 paddingHorizontal: 8,
                 paddingBottom: 2,
                 alignContent: 'flex-start',
-              }}>
-              <Pressable
-                onPress={() => {
-                  navigation.navigate('Map');
-                }}>
-                <Text style={styles.location}>LOCATION</Text>
-              </Pressable>
-            </View>
+              }}></View>
             <View style={styles.divider} />
             <Text style={{fontSize: 30, color: 'black'}}>Description</Text>
             <View>
