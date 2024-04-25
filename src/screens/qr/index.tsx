@@ -3,6 +3,7 @@ import {View, Text, StyleSheet, Alert} from 'react-native';
 import QRCodeScanner from 'react-native-qrcode-scanner';
 import {checkQR} from '../../actions/qr';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {visitorBooth} from '../../actions/booth';
 
 const ScanQR = ({navigation}: any) => {
   const [info, setInfo] = useState('SCAN QR CODE');
@@ -10,21 +11,22 @@ const ScanQR = ({navigation}: any) => {
     const jsonObject = JSON.parse(e);
     const eventId = jsonObject.eventId;
     const boothId = jsonObject.boothId;
+    const userId = await AsyncStorage.getItem('userId');
     if (eventId) {
       const id = parseInt(eventId, 10);
       navigation.navigate('Event', {
         id,
       });
     }
-    if (boothId) {
+    if (boothId && userId) {
       const id = parseInt(boothId, 10);
+      await visitorBooth(parseInt(userId, 10), id);
       navigation.navigate('Booth', {
         id,
         imageUrl: '',
       });
     }
     const ticketId = jsonObject.ticketId;
-    const userId = await AsyncStorage.getItem('userId');
     if (userId) {
       const res = await checkQR(parseInt(userId, 10), parseInt(ticketId, 10));
       if (res.status !== 200) {

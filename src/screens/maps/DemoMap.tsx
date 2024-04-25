@@ -1,4 +1,4 @@
-import {View, StyleSheet} from 'react-native';
+import {View, StyleSheet, Text} from 'react-native';
 import React, {useEffect, useRef, useState} from 'react';
 import MapView, {Marker} from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
@@ -27,35 +27,14 @@ type Props = {
 const DemoMap = ({route}: Props) => {
   const {id, event, booths} = route.params;
   const mapRef = useRef<MapView>(null);
-
-  // const [state, setState] = useState<{
-  //   curLoc: Coordinates;
-  //   destinationCords: Coordinates;
-  //   isLoading: boolean;
-  //   coordinate: AnimatedRegion;
-  // }>({
-  //   curLoc: {
-  //     latitude: 0,
-  //     longitude: 0,
-  //   },
-  //   destinationCords: {
-  //     latitude: 0,
-  //     longitude: 0,
-  //   },
-  //   isLoading: false,
-  //   coordinate: new AnimatedRegion({
-  //     latitude: 0,
-  //     longitude: 0,
-  //   }),
-  // });
   const [location, setLocation] = useState<Coordinates>({
-    latitude: 0,
-    longitude: 0,
+    latitude: 15.968588,
+    longitude: 108.260499,
   });
   useEffect(() => {
     setTimeout(() => {
       getLiveLocation();
-    }, 4000);
+    }, 1000);
   });
 
   const currentLocationIcon = require('./../../assets/images/current-location.png');
@@ -66,28 +45,11 @@ const DemoMap = ({route}: Props) => {
     const locPermissionDenied = await locationPermission();
     if (locPermissionDenied) {
       const {latitude, longitude} = await getCurrentLocation();
-      console.log('get live location after 4 second');
+      console.log('get live location after 1 second');
       console.log(latitude, longitude);
       setLocation({latitude, longitude});
-
-      // animate(latitude, longitude);
-      // setState({
-      //   ...state,
-      //   curLoc: {latitude, longitude},
-      //   coordinate: new AnimatedRegion({
-      //     latitude: latitude,
-      //     longitude: longitude,
-      //   }),
-      // });
     }
   };
-
-  // const animate = (latitude: number, longitude: number) => {
-  //   const newCoordinate: Coordinates = {latitude, longitude};
-  //   if (markerRef.current) {
-  //     markerRef.current.animateMarkerToCoordinate(newCoordinate, 7000);
-  //   }
-  // };
 
   return (
     <View style={styles.page}>
@@ -98,8 +60,8 @@ const DemoMap = ({route}: Props) => {
         initialRegion={{
           latitude: location.latitude,
           longitude: location.longitude,
-          latitudeDelta: 0.0922,
-          longitudeDelta: 0.0421,
+          latitudeDelta: 0.01,
+          longitudeDelta: 0.01,
         }}>
         <Marker
           coordinate={{
@@ -129,22 +91,10 @@ const DemoMap = ({route}: Props) => {
               }}>
               <View style={styles.iconContainer}>
                 <Image source={boothLocation} style={styles.icon} />
+                <Text style={styles.boothName}>{booth.name}</Text>
               </View>
             </Marker>
           ))}
-        {/* <MapViewDirections
-          origin={{
-            latitude: location.latitude,
-            longitude: location.longitude,
-          }}
-          destination={{
-            latitude: 37.78825,
-            longitude: -122.4322,
-          }}
-          apikey={GOOGLE_MAP_KEY}
-          strokeWidth={3}
-          strokeColor="red"
-        /> */}
       </MapView>
     </View>
   );
@@ -166,13 +116,16 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   iconContainer: {
-    width: 40,
-    height: 40,
-    justifyContent: 'center',
     alignItems: 'center',
   },
   icon: {
     width: 40,
     height: 40,
+  },
+  boothName: {
+    marginTop: 5,
+    color: '#ff8e3c',
+    fontWeight: 'bold',
+    fontSize: 16,
   },
 });
